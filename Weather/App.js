@@ -10,7 +10,17 @@ import * as Location from "expo-location";
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
 import { API_KEYS } from "./apikey";
+import { Fontisto } from "@expo/vector-icons";
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
+const icons = {
+  Clouds: "cloudy",
+  Rain: "rains",
+  Clear: "day-sunny",
+  Atmosphere: "fog",
+  Snow: "snow",
+  Drizzle: "rain",
+  Thunderstorm: "lightning",
+};
 export default function App() {
   const getWeather = async () => {
     const { granted } = await Location.requestForegroundPermissionsAsync();
@@ -61,9 +71,23 @@ export default function App() {
         ) : (
           days.map((day, index) => (
             <View key={index} style={styles.day}>
-              <Text style={styles.temp}>
-                {parseFloat(day.temp.day).toFixed(1)}
-              </Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "flex-end",
+                  width: "100%",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={styles.temp}>
+                  {parseFloat(day.temp.day).toFixed(1)}
+                </Text>
+                <Fontisto
+                  name={icons[day.weather[0].main]}
+                  size={68}
+                  color="black"
+                />
+              </View>
               <Text style={styles.description}>{day.weather[0].main}</Text>
               <Text style={styles.tiny}>{day.weather[0].description}</Text>
             </View>
@@ -84,18 +108,18 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   city: {
-    flex: 1,
+    flex: 0.5,
     justifyContent: "center",
     alignItems: "center",
   },
   weather: {},
   day: {
     width: SCREEN_WIDTH,
-    alignItems: "center",
+    paddingLeft: 15,
   },
   temp: {
     marginTop: 50,
-    fontSize: 178,
+    fontSize: 100,
   },
   description: {
     fontSize: 60,
